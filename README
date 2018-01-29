@@ -1,0 +1,8 @@
+You need first install
+https://github.com/vporton/errno-java-jni
+
+To test this package, type a command like
+
+java -Djava.library.path=/usr/local/lib -classpath ./build/classes:./build/test/classes org.portonvictor.errno.test.PrintError 1
+
+(This will print the message for errno==1.)
