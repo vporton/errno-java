@@ -1,4 +1,3 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
 /*
  * Errno.java
  * Copyright (C) 2018 Victor Porton <porton@narod.ru>
@@ -19,7 +18,7 @@
 package org.portonvictor.errno;
 
 /**
- *
+ * Exception class to throw C {@code errno}.
  * @author Victor Porton
  */
 public class Errno extends Error {
@@ -30,12 +29,20 @@ public class Errno extends Error {
 
     private int code;
 
+    /**
+     * Create the exception.
+     * @param code an {@code errno} value
+     */
     public Errno(int code) {
         this.code = code;
     }
 
     private native byte[] getMessageImpl();
 
+    /**
+     * Get the operating system error message.
+     * @return UTF-8 encoded error message
+     */
     public String getMessage() {
         return new String(getMessageImpl());
     }
