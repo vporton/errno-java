@@ -1,0 +1,83 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+repositories {
+    mavenCentral()
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+group = "org.portonvictor"
+archivesBaseName = "errno-java"
+version = "0.0.1"
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'errno-java'
+        packaging 'jar'
+        // optionally artifactId can be defined here
+        description 'Exceptions based on errno C variable.'
+        url 'https://github.com/vporton/errno-java'
+
+        scm {
+          connection 'scm:git:git://github.com:vporton/errno-java.git'
+          developerConnection 'scm:git:git://github.com:vporton/errno-java.git'
+          url 'https://github.com/vporton/errno-java'
+        }
+
+        licenses {
+          license {
+            name 'GNU Lesser General Public License, Version 3'
+            url 'https://www.gnu.org/licenses/lgpl.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'porton'
+            name 'Victor Porton'
+            email 'porton@narod.ru'
+          }
+        }
+      }
+    }
+  }
+}
+
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+compileJava {
+    options.compilerArgs += ["-Xlint:unchecked"]
+}
