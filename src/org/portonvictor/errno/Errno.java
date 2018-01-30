@@ -37,6 +37,19 @@ public class Errno extends Error {
         this.code = code;
     }
 
+    /**
+     * Create the exception.
+     * The exception code is taken from C variable {@code errno}.
+     */
+    public Errno() {
+        this.code = getErrno();
+    }
+
+    /**
+     * @return value of {@code errno} C variable
+     */
+    public native static int getErrno();
+
     private native byte[] getMessageImpl();
 
     /**

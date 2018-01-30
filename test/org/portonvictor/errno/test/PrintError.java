@@ -15,7 +15,8 @@ public class PrintError {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Error err = new org.portonvictor.errno.Errno(Integer.parseInt(args[0]));
+        Error err = args.length != 0 ? new org.portonvictor.errno.Errno(Integer.parseInt(args[0]))
+                                     : new org.portonvictor.errno.Errno();
         System.out.println(err.getMessage());
     }
 
